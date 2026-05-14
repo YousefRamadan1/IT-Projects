@@ -1,0 +1,106 @@
+#!/bin/bash
+
+# Simple User & Group Managment
+
+echo "This is a system managment tool What do you want to do"
+echo
+
+PS3="Enter your choice: "
+
+select choice in \
+"Add User" \
+"Modify User" \
+"Delete User" \
+"List Users" \
+"Add Group" \
+"Modify Group" \
+"Delete Group" \
+"List Groups" \
+"Disable User" \
+"Enable User" \
+"Change Password" \
+"About" \
+"Exit"
+do
+    case $REPLY in
+        1)
+            read -p "Enter username: " user
+            useradd "$user"
+            echo "User added."
+            ;;
+
+        2)
+            read -p "Enter old username: " old
+            read -p "Enter new username: " new
+            usermod -l "$new" "$old"
+            echo "User modified."
+            ;;
+
+        3)
+            read -p "Enter username: " user
+            userdel -r "$user"
+            echo "User deleted."
+            ;;
+
+        4)
+            echo "Users list:"
+            cut -d: -f1 /etc/passwd
+            ;;
+
+        5)
+            read -p "Enter group name: " group
+            groupadd "$group"
+            echo "Group added."
+            ;;
+
+        6)
+            read -p "Enter old group name: " oldg
+            read -p "Enter new group name: " newg
+            groupmod -n "$newg" "$oldg"
+            echo "Group modified."
+            ;;
+
+        7)
+            read -p "Enter group name: " group
+            groupdel "$group"
+            echo "Group deleted."
+            ;;
+
+        8)
+            echo "Groups list:"
+            cut -d: -f1 /etc/group
+            ;;
+
+        9)
+            read -p "Enter username: " user
+            usermod -L "$user"
+            echo "User disabled."
+            ;;
+
+        10)
+            read -p "Enter username: " user
+            usermod -U "$user"
+            echo "User enabled."
+            ;;
+
+        11)
+            read -p "Enter username: " user
+            passwd "$user"
+            ;;
+
+        12)
+            echo "Simple bash menu for user and group management"
+            ;;
+
+        13)
+            echo "Bye 👋"
+            break
+            ;;
+
+        *)
+            echo "Wrong choice"
+            ;;
+    esac
+
+    echo
+done
